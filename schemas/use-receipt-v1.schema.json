@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "crowsi://credential-runtime/use-receipt/v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "metadata", "output"],
+  "properties": {
+    "schema": { "const": "crowsi://credential-runtime/use-receipt/v1" },
+    "metadata": {
+      "type": "object", "additionalProperties": false,
+      "required": [
+        "request_id", "event_id", "credential_ref", "operation", "status",
+        "occurred_at_epoch_s", "expires_at_epoch_s", "contains_secret_values"
+      ],
+      "properties": {
+        "request_id": { "type": "string", "minLength": 1, "maxLength": 96 },
+        "event_id": { "type": "string", "minLength": 1, "maxLength": 96 },
+        "credential_ref": { "type": "string", "minLength": 1, "maxLength": 512 },
+        "operation": { "enum": ["bearer-header", "opaque-secret", "sign"] },
+        "status": { "const": "completed" },
+        "occurred_at_epoch_s": { "type": "integer", "minimum": 1 },
+        "expires_at_epoch_s": { "type": "integer", "minimum": 1 },
+        "contains_secret_values": { "const": false }
+      }
+    },
+    "output": {
+      "type": "object", "additionalProperties": false,
+      "required": [
+        "schema", "content_type", "payload", "result_sha256",
+        "request_body_sha256", "audience", "expires_at_epoch_s"
+      ],
+      "properties": {
+        "schema": { "type": "string", "pattern": "^[a-z0-9-]+://[A-Za-z0-9/._:-]+$", "maxLength": 160 },
+        "content_type": { "type": "string", "minLength": 1, "maxLength": 128 },
+        "payload": {
+          "type": "array", "minItems": 1, "maxItems": 16384,
+          "items": { "type": "integer", "minimum": 0, "maximum": 255 }
+        },
+        "result_sha256": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" },
+        "request_body_sha256": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" },
+        "audience": { "type": "string", "minLength": 1, "maxLength": 96 },
+        "expires_at_epoch_s": { "type": "integer", "minimum": 1 }
+      }
+    }
+  }
+}

@@ -1,0 +1,84 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "crowsi://credential-runtime/use-request/v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema", "request_id", "binding", "credential", "audience", "host",
+    "ttl_seconds", "operation_input_schema", "operation_input",
+    "operation_body_sha256", "operation"
+  ],
+  "properties": {
+    "schema": { "const": "crowsi://credential-runtime/use-request/v1" },
+    "request_id": { "$ref": "#/$defs/component" },
+    "binding": { "$ref": "#/$defs/binding" },
+    "credential": { "$ref": "#/$defs/credential" },
+    "audience": { "$ref": "#/$defs/component" },
+    "host": { "type": "string", "minLength": 1, "maxLength": 253 },
+    "ttl_seconds": { "type": "integer", "minimum": 1, "maximum": 300 },
+    "operation_input_schema": { "$ref": "#/$defs/schemaUri" },
+    "operation_input": {
+      "type": "array", "minItems": 1, "maxItems": 32768,
+      "items": { "type": "integer", "minimum": 0, "maximum": 255 }
+    },
+    "operation_body_sha256": { "$ref": "#/$defs/digest" },
+    "operation": {
+      "oneOf": [
+        { "$ref": "#/$defs/bearer" },
+        { "$ref": "#/$defs/opaque" },
+        { "$ref": "#/$defs/sign" }
+      ]
+    }
+  },
+  "$defs": {
+    "component": { "type": "string", "minLength": 1, "maxLength": 128 },
+    "digest": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" },
+    "schemaUri": { "type": "string", "pattern": "^[a-z0-9-]+://[A-Za-z0-9/._:-]+$", "maxLength": 160 },
+    "binding": {
+      "type": "object", "additionalProperties": false,
+      "required": ["pairwise_subject", "device_id", "workload_id", "grant_id", "resource", "action", "proof_key_ref"],
+      "properties": {
+        "pairwise_subject": { "$ref": "#/$defs/component" },
+        "device_id": { "$ref": "#/$defs/component" },
+        "workload_id": { "type": "string", "pattern": "^spiffe://", "maxLength": 255 },
+        "grant_id": { "$ref": "#/$defs/component" },
+        "resource": { "$ref": "#/$defs/component" },
+        "action": { "const": "use-credential" },
+        "proof_key_ref": { "$ref": "#/$defs/component" }
+      }
+    },
+    "credential": {
+      "type": "object", "additionalProperties": false,
+      "required": ["id", "tenant", "service", "purpose", "audience"],
+      "properties": {
+        "id": { "$ref": "#/$defs/component" },
+        "tenant": { "$ref": "#/$defs/component" },
+        "service": { "$ref": "#/$defs/component" },
+        "purpose": { "$ref": "#/$defs/component" },
+        "audience": { "$ref": "#/$defs/component" }
+      }
+    },
+    "bearer": {
+      "type": "object", "additionalProperties": false,
+      "required": ["kind", "adapter"],
+      "properties": { "kind": { "const": "bearer-header" }, "adapter": { "$ref": "#/$defs/component" } }
+    },
+    "opaque": {
+      "type": "object", "additionalProperties": false,
+      "required": ["kind", "adapter", "operation"],
+      "properties": {
+        "kind": { "const": "opaque-secret" }, "adapter": { "$ref": "#/$defs/component" },
+        "operation": { "$ref": "#/$defs/component" }
+      }
+    },
+    "sign": {
+      "type": "object", "additionalProperties": false,
+      "required": ["kind", "adapter", "algorithm", "delivery", "output_schema"],
+      "properties": {
+        "kind": { "const": "sign" }, "adapter": { "$ref": "#/$defs/component" },
+        "algorithm": { "$ref": "#/$defs/component" }, "delivery": { "$ref": "#/$defs/component" },
+        "output_schema": { "$ref": "#/$defs/schemaUri" }
+      }
+    }
+  }
+}

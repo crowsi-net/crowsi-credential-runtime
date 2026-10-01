@@ -1,0 +1,8 @@
+{
+  "schema": "crowsi://local-control/request/v1",
+  "request_id": "request-a",
+  "action": "use-credential",
+  "resource": "credential-88078f54c36b77f4251cb35570cb7e8e51eb7d3b5a09ccd88cfc3860e897e6f0",
+  "purpose": "credential-runtime-use",
+  "body_sha256": "sha256:8d9a6550523f562f78a1fd15c55bfe536753d246e5da6c773794580ea10e703d"
+}

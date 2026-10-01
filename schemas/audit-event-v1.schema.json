@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "crowsi://credential-runtime/audit-event/v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema", "event_id", "request_digest", "subject_digest", "device_digest",
+    "workload_digest", "grant_digest", "credential_ref_digest", "operation",
+    "operation_input_schema", "operation_body_sha256", "output_schema",
+    "output_sha256", "output_bytes", "occurred_at_epoch_s", "expires_at_epoch_s",
+    "contains_secret_values"
+  ],
+  "properties": {
+    "schema": { "const": "crowsi://credential-runtime/audit-event/v1" },
+    "event_id": { "type": "string", "minLength": 1, "maxLength": 96 },
+    "request_digest": { "$ref": "#/$defs/digest" },
+    "subject_digest": { "$ref": "#/$defs/digest" },
+    "device_digest": { "$ref": "#/$defs/digest" },
+    "workload_digest": { "$ref": "#/$defs/digest" },
+    "grant_digest": { "$ref": "#/$defs/digest" },
+    "credential_ref_digest": { "$ref": "#/$defs/digest" },
+    "operation": { "enum": ["bearer-header", "opaque-secret", "sign"] },
+    "operation_input_schema": { "type": "string", "pattern": "^[a-z0-9-]+://[A-Za-z0-9/._:-]+$", "maxLength": 160 },
+    "operation_body_sha256": { "$ref": "#/$defs/digest" },
+    "output_schema": { "type": "string", "pattern": "^[a-z0-9-]+://[A-Za-z0-9/._:-]+$", "maxLength": 160 },
+    "output_sha256": { "$ref": "#/$defs/digest" },
+    "output_bytes": { "type": "integer", "minimum": 1, "maximum": 16384 },
+    "occurred_at_epoch_s": { "type": "integer", "minimum": 1 },
+    "expires_at_epoch_s": { "type": "integer", "minimum": 1 },
+    "contains_secret_values": { "const": false }
+  },
+  "$defs": {
+    "digest": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" }
+  }
+}

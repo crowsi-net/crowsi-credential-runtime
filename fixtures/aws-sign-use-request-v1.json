@@ -1,0 +1,33 @@
+{
+  "schema": "crowsi://credential-runtime/use-request/v1",
+  "request_id": "request-a",
+  "binding": {
+    "pairwise_subject": "pairwise-crowsi-runtime-fixture",
+    "device_id": "device-runtime-workstation-a",
+    "workload_id": "spiffe://crowsi/local/zixcel-aws",
+    "grant_id": "grant-a",
+    "resource": "credential-88078f54c36b77f4251cb35570cb7e8e51eb7d3b5a09ccd88cfc3860e897e6f0",
+    "action": "use-credential",
+    "proof_key_ref": "abcd1234"
+  },
+  "credential": {
+    "id": "primary",
+    "tenant": "tenant-a",
+    "service": "zixcel-aws",
+    "purpose": "sign",
+    "audience": "aws"
+  },
+  "audience": "aws",
+  "host": "sts.example.test",
+  "ttl_seconds": 10,
+  "operation_input_schema": "zixcel://aws/sign-request/v1",
+  "operation_input": [123, 34, 109, 101, 116, 104, 111, 100, 34, 58, 34, 71, 69, 84, 34, 125],
+  "operation_body_sha256": "sha256:37e8e2bbba66c9bfb5fcd8054f549fc3d6513de2449399258f5e3307c4d1dd3c",
+  "operation": {
+    "kind": "sign",
+    "adapter": "zixcel-aws",
+    "algorithm": "aws4-hmac-sha256",
+    "delivery": "ipc-response",
+    "output_schema": "zixcel://aws/sign-response/v1"
+  }
+}

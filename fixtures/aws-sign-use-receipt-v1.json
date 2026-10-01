@@ -1,0 +1,22 @@
+{
+  "schema": "crowsi://credential-runtime/use-receipt/v1",
+  "metadata": {
+    "request_id": "request-a",
+    "event_id": "00112233445566778899aabbccddeeff",
+    "credential_ref": "tenant-a/zixcel-aws/sign/aws/primary",
+    "operation": "sign",
+    "status": "completed",
+    "occurred_at_epoch_s": 1000,
+    "expires_at_epoch_s": 1010,
+    "contains_secret_values": false
+  },
+  "output": {
+    "schema": "zixcel://aws/sign-response/v1",
+    "content_type": "application/json",
+    "payload": [123, 34, 115, 105, 103, 110, 101, 100, 34, 58, 116, 114, 117, 101, 125],
+    "result_sha256": "sha256:8546cb9debf7bbd30f0c9d7694411105cdc9b411e41321533dbdb447fe367b18",
+    "request_body_sha256": "sha256:10b20c5e37801169dc6dcdc51ee9a956aa18fbe1b35ceac0e32968b61811cdc1",
+    "audience": "aws",
+    "expires_at_epoch_s": 1010
+  }
+}
